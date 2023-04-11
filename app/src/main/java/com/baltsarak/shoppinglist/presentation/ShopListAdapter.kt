@@ -19,10 +19,18 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        val view =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_shop_enabled, parent, false)
+        val layout = when (viewType) {
+            VIEW_TYPE_ENABLED -> R.layout.item_shop_enabled
+            VIEW_TYPE_DISABLED -> R.layout.item_shop_disabled
+            else -> {
+                throw java.lang.RuntimeException("Unknown view type: $viewType")
+            }
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ShopItemViewHolder(view)
     }
 
@@ -31,7 +39,11 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
         viewHolder.textViewName.text = shopItem.name
         viewHolder.textViewCount.text = shopItem.count.toString()
         viewHolder.view.setOnLongClickListener {
+            onShopItemLongClickListener?.invoke(shopItem)
             true
+        }
+        viewHolder.view.setOnClickListener {
+            onShopItemClickListener?.invoke(shopItem)
         }
     }
 
@@ -39,8 +51,25 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
         return shopList.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        val item = shopList[position]
+        return if (item.enabled) {
+            VIEW_TYPE_ENABLED
+        } else {
+            VIEW_TYPE_DISABLED
+        }
+    }
+
+
     class ShopItemViewHolder(val view: View) : ViewHolder(view) {
         val textViewName = view.findViewById<TextView>(R.id.text_view_name)
         val textViewCount = view.findViewById<TextView>(R.id.text_view_count)
+    }
+
+    companion object {
+        const val VIEW_TYPE_ENABLED = 1
+        const val VIEW_TYPE_DISABLED = 0
+
+        const val MAX_POOL_SIZE = 15
     }
 }
