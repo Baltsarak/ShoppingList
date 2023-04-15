@@ -1,23 +1,12 @@
 package com.baltsarak.shoppinglist.presentation
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.ListAdapter
 import com.baltsarak.shoppinglist.R
 import com.baltsarak.shoppinglist.domain.ShopItem
 
-class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
-
-    var shopList = listOf<ShopItem>()
-        @SuppressLint("NotifyDataSetChanged")
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
@@ -30,12 +19,14 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
                 throw java.lang.RuntimeException("Unknown view type: $viewType")
             }
         }
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(layout, parent, false)
         return ShopItemViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         viewHolder.textViewName.text = shopItem.name
         viewHolder.textViewCount.text = shopItem.count.toString()
         viewHolder.view.setOnLongClickListener {
@@ -47,23 +38,13 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return shopList.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        val item = shopList[position]
+        val item = getItem(position)
         return if (item.enabled) {
             VIEW_TYPE_ENABLED
         } else {
             VIEW_TYPE_DISABLED
         }
-    }
-
-
-    class ShopItemViewHolder(val view: View) : ViewHolder(view) {
-        val textViewName = view.findViewById<TextView>(R.id.text_view_name)
-        val textViewCount = view.findViewById<TextView>(R.id.text_view_count)
     }
 
     companion object {
