@@ -1,6 +1,5 @@
 package com.baltsarak.shoppinglist.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baltsarak.shoppinglist.data.ShopListRepositoryImpl
 import com.baltsarak.shoppinglist.domain.DeleteShopItemUseCase
