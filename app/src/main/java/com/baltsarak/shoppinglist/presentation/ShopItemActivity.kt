@@ -2,13 +2,12 @@ package com.baltsarak.shoppinglist.presentation
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.parseIntent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.baltsarak.shoppinglist.R
 import com.baltsarak.shoppinglist.domain.ShopItem
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
@@ -19,6 +18,10 @@ class ShopItemActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             launchRightMode()
         }
+    }
+
+    override fun onEditingFinished() {
+        finish()
     }
 
     private fun launchRightMode() {
