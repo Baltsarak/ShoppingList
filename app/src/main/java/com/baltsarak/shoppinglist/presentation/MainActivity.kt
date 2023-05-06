@@ -2,7 +2,6 @@ package com.baltsarak.shoppinglist.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baltsarak.shoppinglist.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -42,6 +41,11 @@ class MainActivity : AppCompatActivity() {
     private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }
+
+    override fun onEditingFinished() {
+        supportFragmentManager.popBackStack()
+    }
+
     private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
