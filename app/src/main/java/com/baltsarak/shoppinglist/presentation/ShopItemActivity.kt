@@ -2,7 +2,6 @@ package com.baltsarak.shoppinglist.presentation
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.parseIntent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.baltsarak.shoppinglist.R

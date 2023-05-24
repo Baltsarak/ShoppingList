@@ -37,12 +37,10 @@ class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCa
         val binding = viewHolder.binding
         when (binding) {
             is ItemShopDisabledBinding -> {
-                binding.textViewName.text = shopItem.name
-                binding.textViewCount.text = shopItem.count.toString()
+                binding.shopItem = shopItem
             }
             is ItemShopEnabledBinding -> {
-                binding.textViewName.text = shopItem.name
-                binding.textViewCount.text = shopItem.count.toString()
+                binding.shopItem = shopItem
             }
         }
 
