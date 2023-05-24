@@ -1,6 +1,8 @@
 package com.baltsarak.shoppinglist.presentation
 
 
+
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -45,7 +47,8 @@ class ShopItemFragment : Fragment() {
     ): View {
         _binding = FragmentShopItemBinding.inflate(inflater, container, false)
         return binding.root
-      
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
