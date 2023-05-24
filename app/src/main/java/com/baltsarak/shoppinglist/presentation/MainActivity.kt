@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baltsarak.shoppinglist.R
 import com.baltsarak.shoppinglist.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
