@@ -1,15 +1,18 @@
 package com.baltsarak.shoppinglist.presentation
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.baltsarak.shoppinglist.data.ShopListRepositoryImpl
 import com.baltsarak.shoppinglist.domain.DeleteShopItemUseCase
 import com.baltsarak.shoppinglist.domain.EditShopItemUseCase
 import com.baltsarak.shoppinglist.domain.GetShopItemListUseCase
 import com.baltsarak.shoppinglist.domain.ShopItem
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = ShopListRepositoryImpl
+    private val repository = ShopListRepositoryImpl(application)
 
     private val getShopItemListUseCase = GetShopItemListUseCase(repository)
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
@@ -18,11 +21,15 @@ class MainViewModel : ViewModel() {
     val shopList = getShopItemListUseCase.getShopItemList()
 
     fun deleteShopItem(shopItem: ShopItem) {
-        deleteShopItemUseCase.deleteShopItem(shopItem)
+        viewModelScope.launch {
+            deleteShopItemUseCase.deleteShopItem(shopItem)
+        }
     }
 
     fun changeEnableState(shopItem: ShopItem) {
-        val newShopItem = shopItem.copy(enabled = !shopItem.enabled)
-        editShopItemUseCase.editShopItem(newShopItem)
+        viewModelScope.launch {
+            val newShopItem = shopItem.copy(enabled = !shopItem.enabled)
+            editShopItemUseCase.editShopItem(newShopItem)
+        }
     }
 }
