@@ -1,24 +1,21 @@
 package com.baltsarak.shoppinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baltsarak.shoppinglist.data.ShopListRepositoryImpl
 import com.baltsarak.shoppinglist.domain.AddShopItemUseCase
 import com.baltsarak.shoppinglist.domain.EditShopItemUseCase
 import com.baltsarak.shoppinglist.domain.GetShopItemByIdUseCase
 import com.baltsarak.shoppinglist.domain.ShopItem
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = ShopListRepositoryImpl(application)
-
-    private val addShopItemUseCase = AddShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
-    private val getShopItemByIdUseCase = GetShopItemByIdUseCase(repository)
+class ShopItemViewModel @Inject constructor(
+    private val addShopItemUseCase: AddShopItemUseCase,
+    private val editShopItemUseCase: EditShopItemUseCase,
+    private val getShopItemByIdUseCase: GetShopItemByIdUseCase
+) : ViewModel() {
 
     private val _shopItem = MutableLiveData<ShopItem>()
     val shopItem: LiveData<ShopItem>
@@ -77,7 +74,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
 
     private fun parseCount(inputCount: String?): Int {
         return try {
-            inputCount?.trim()?.toInt() ?: 0
+            inputCount?.trim()?.toInt() ?: 1
         } catch (e: Exception) {
             0
         }
@@ -89,7 +86,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
             _errorInputName.value = true
             result = false
         }
-        if (count <= 0) {
+        if (count < 0) {
             _errorInputCount.value = true
             result = false
         }

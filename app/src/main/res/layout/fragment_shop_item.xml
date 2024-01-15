@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{String.valueOf(viewModel.shopItem.count)}"
                 android:hint="@string/hint_count"
-                android:inputType="number" />
+                android:inputType="number"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
