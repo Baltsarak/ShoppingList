@@ -1,8 +1,11 @@
 package com.baltsarak.shoppinglist.domain
 
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 
-class GetShopItemListUseCase(private val shopListRepository: ShopListRepository) {
+class GetShopItemListUseCase @Inject constructor(
+    private val shopListRepository: ShopListRepository
+) {
     fun getShopItemList(): LiveData<List<ShopItem>> {
         return shopListRepository.getShopItemList()
     }
