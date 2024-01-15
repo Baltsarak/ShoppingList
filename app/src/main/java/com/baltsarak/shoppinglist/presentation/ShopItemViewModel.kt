@@ -77,7 +77,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
 
     private fun parseCount(inputCount: String?): Int {
         return try {
-            inputCount?.trim()?.toInt() ?: 0
+            inputCount?.trim()?.toInt() ?: 1
         } catch (e: Exception) {
             0
         }
@@ -89,7 +89,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
             _errorInputName.value = true
             result = false
         }
-        if (count <= 0) {
+        if (count < 0) {
             _errorInputCount.value = true
             result = false
         }
